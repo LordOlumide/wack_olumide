@@ -11,19 +11,34 @@ class MessageDisplay extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 6),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          message.profilePic,
-          const SizedBox(width: 10),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                message.userName,
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+          Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Image(
+                image: message.profilePic,
+                height: 50,
+                width: 50,
+                fit: BoxFit.cover,
               ),
-              const SizedBox(height: 5),
-              Text(message.messageText, style: TextStyle(fontSize: 16)),
-            ],
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  message.userName,
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 2),
+                Text(message.messageText, style: TextStyle(fontSize: 16)),
+              ],
+            ),
           ),
         ],
       ),

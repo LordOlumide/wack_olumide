@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:wack/src/screens/auth/login/login_screen.dart';
 import 'package:wack/src/screens/home_screen/channels_screen.dart';
 import 'package:wack/src/screens/home_screen/messages_screen.dart';
 import 'package:wack/src/screens/splash_screen/splash_screen.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
 
   runApp(const MyApp());
 }

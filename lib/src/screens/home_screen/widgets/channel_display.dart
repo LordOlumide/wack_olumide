@@ -18,9 +18,11 @@ class ChannelDisplay extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 1),
+        margin: EdgeInsets.fromLTRB(8, 2, 8, 2),
+        padding: const EdgeInsets.symmetric(vertical: 2),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.white : Colors.transparent,
+          color: isSelected ? Colors.deepPurple : Colors.white,
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
           children: [
@@ -28,9 +30,9 @@ class ChannelDisplay extends StatelessWidget {
             Text(
               dummyChannels[index].name,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 19,
                 fontWeight: FontWeight.w500,
-                color: isSelected ? Colors.deepPurple : Colors.white,
+                color: isSelected ? Colors.white : Colors.deepPurple,
               ),
             ),
             const SizedBox(width: 12),
@@ -39,16 +41,16 @@ class ChannelDisplay extends StatelessWidget {
                 width: 30,
                 height: 30,
                 decoration: BoxDecoration(
-                  color: isSelected ? Colors.deepPurple : Colors.white,
+                  color: isSelected ? Colors.white : Colors.deepPurple,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Center(
                   child: Text(
                     dummyChannels[index].noOfUnreadMessages.toString(),
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 19,
                       fontWeight: FontWeight.w500,
-                      color: isSelected ? Colors.white : Colors.deepPurple,
+                      color: isSelected ? Colors.deepPurple : Colors.white,
                     ),
                   ),
                 ),

@@ -37,8 +37,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 30),
-              SizedBox(
-                width: MediaQuery.sizeOf(context).width / 3,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
                   controller: _userNameController,
                   decoration: InputDecoration(

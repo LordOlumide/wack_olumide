@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Message {
-  final Image profilePic;
+  final AssetImage profilePic;
   final String userName;
   final String messageText;
 

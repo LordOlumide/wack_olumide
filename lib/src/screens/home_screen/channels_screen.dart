@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:wack/src/screens/helpers/ad_helper.dart';
 import 'package:wack/src/screens/home_screen/dummy_data/dummy_channels.dart';
 import 'package:wack/src/screens/home_screen/messages_screen.dart';
 import 'package:wack/src/screens/home_screen/models/channel.dart';
@@ -17,53 +18,48 @@ class ChannelsScreen extends StatefulWidget {
 class _ChannelsScreenState extends State<ChannelsScreen> {
   AdManagerInterstitialAd? _interstitialAd;
 
-  final testAdUnitId = '/21775744923/example/interstitial';
-
-  int selectedTabIndex = 0;
-
-  void loadAndShowAd() {
-    AdManagerInterstitialAd.load(
-      adUnitId: testAdUnitId,
-      request: const AdManagerAdRequest(),
-      adLoadCallback: AdManagerInterstitialAdLoadCallback(
-        onAdLoaded: (ad) {
-          debugPrint('$ad loaded.');
-          _interstitialAd = ad;
-        },
-        onAdFailedToLoad: (LoadAdError error) {
-          debugPrint('AdManagerInterstitialAd failed to load: $error');
-        },
-      ),
-    );
-    _interstitialAd?.show();
-  }
+  int? selectedTabIndex;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 5),
-          Align(
-            alignment: Alignment.center,
-            child: SizedBox(
-              height: 120,
-              child: Image.asset(
-                'assets/images/logo.png',
-                fit: BoxFit.scaleDown,
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(bottom: 50),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 5),
+              Align(
+                alignment: Alignment.center,
+                child: SizedBox(
+                  height: 120,
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                    fit: BoxFit.scaleDown,
+                  ),
+                ),
               ),
-            ),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Channels',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
+                ),
+              ),
+              const SizedBox(height: 5),
+              for (int i = 0; i < dummyChannels.length; i++)
+                ChannelDisplay(
+                  index: i,
+                  isSelected:
+                      selectedTabIndex != null ? i == selectedTabIndex : false,
+                  onTap:
+                      () => _onChangeTabPressed(context, i, dummyChannels[i]),
+                ),
+            ],
           ),
-          const SizedBox(height: 10),
-          for (int i = 0; i < dummyChannels.length; i++)
-            ChannelDisplay(
-              index: i,
-              isSelected: i == selectedTabIndex,
-              onTap: () => _onChangeTabPressed(context, i, dummyChannels[i]),
-            ),
-        ],
+        ),
       ),
     );
   }
@@ -76,14 +72,30 @@ class _ChannelsScreenState extends State<ChannelsScreen> {
     if (channelIndex == selectedTabIndex) {
       return;
     }
-    setState(() {
-      selectedTabIndex = channelIndex;
-    });
-    loadAndShowAd();
-    Navigator.pushNamed(
-      context,
-      MessagesScreen.screenId,
-      arguments: {'channel_name': channel.name},
+    await AdManagerInterstitialAd.load(
+      adUnitId: AdHelper.testAdUnitId,
+      request: const AdManagerAdRequest(),
+      adLoadCallback: AdManagerInterstitialAdLoadCallback(
+        onAdLoaded: (ad) async {
+          debugPrint('$ad loaded.');
+          _interstitialAd = ad;
+          await _interstitialAd?.show();
+
+          setState(() {
+            selectedTabIndex = channelIndex;
+          });
+          if (context.mounted) {
+            Navigator.pushNamed(
+              context,
+              MessagesScreen.screenId,
+              arguments: {'channel_name': channel.name},
+            );
+          }
+        },
+        onAdFailedToLoad: (LoadAdError error) {
+          debugPrint('AdManagerInterstitialAd failed to load: $error');
+        },
+      ),
     );
   }
 }
